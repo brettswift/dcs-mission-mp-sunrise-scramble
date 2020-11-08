@@ -1,23 +1,13 @@
 
-
 -- ATIS Anapa_Vityazevo Airport on 145.00 MHz AM.
-atisAnapa=ATIS:New(AIRBASE.Caucasus.Anapa_Vityazevo, 121.00)
-atisAnapa:SetRadioRelayUnitName("Radio Relay Anapa")
-atisAnapa:SetTowerFrequencies({121, 250})
-atisAnapa:SetActiveRunway("22")
-atisAnapa:SetElevation()
-atisAnapa:SetReportWindTrue()
-atisAnapa:Start()
-
---Good morning!
-
---Several F5's have taken off and are on their way to this airbase!  S.U. 27's are also on their way.  ETA 20 minutes! 
-
---You must scramble immediately!   F14's are currently scrambling and will be your escort.   Call sign Ford. 
-
---Once Airborne head south and tank up with Arco.  Immediately proceed to Suppress Enemy Air Defences.  Once clear, two squadrons of B1 bombers will ripple hell onto the island.  The Warthogs will follow to clean up.   
+--atisAnapa=ATIS:New(AIRBASE.Caucasus.Anapa_Vityazevo, 121.00)
+--atisAnapa:SetRadioRelayUnitName("Radio Relay Anapa")
+--atisAnapa:SetTowerFrequencies({121, 250})
+--atisAnapa:SetActiveRunway("22")
+--atisAnapa:SetElevation()
+--atisAnapa:SetReportWindTrue()
+--atisAnapa:Start()
  
---Refuel and resupply on one of the Carriers and provide support to the area, either to provide air superiority, or support the Warthogs to eliminate remaining ground forces.  This decision is up to you - do what is required. 
 env.info("BSLOG Version Alpha - script is starting",false)
  
 function StartFormation()
@@ -33,7 +23,7 @@ function StartFormation()
     BomberFormation:__Start( 1 )
 end
   
-BomberFormationScheduler = SCHEDULER:New( nil, StartFormation, {}, 10, 120, 0, 600)
+BomberFormationScheduler = SCHEDULER:New( nil, StartFormation, {}, 10, 30, 0, 420)
 BomberFormationScheduler:Stop()
 
 --Bombers to go to orbit waypoint
@@ -55,7 +45,7 @@ function BombersToPreBombingOrbit()
 end
 
 -- in 16 min mission time send to pre-bombing orbit  TODO: make this based on a zone?
-SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 960)
+SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 1020)
 
 Swift = CLIENT:FindByName( "Swift" )
 Swift:HandleEvent( EVENTS.Takeoff )
