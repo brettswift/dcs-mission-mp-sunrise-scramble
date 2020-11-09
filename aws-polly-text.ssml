@@ -8,28 +8,39 @@ Colt flight, stand by for briefing in 10.
 <break time="10s"/>
 
 Colt flight - We have a situation brewing South near the Shamgona Island!  
-Russian forces have set up a defensive command post defended by multiple SA-6 and SA-8 Sam sites.
+Russian forces have set up a defensive command post defended by multiple SA-6 and SA-8 Sam sites.  
+These air defenses limit the capability we have out of Sukhumi.  You are tasked with a SEAD strike at the Shamgona Island. 
 
-Several F5's have taken off and are on their way to this airbase!  S.U. 27's are also on their way.  ETA 20 minutes! 
-
-You must scramble immediately!!!  F14's - Call sign Ford -  are currently scrambling and will be your escort. 
+You must scramble immediately!!!  F14's - Call sign Ford - will be your escort. 
 <break time="600ms"/>
 	 
-Once Airborne head south and tank up with Arco.  Immediately proceed to Suppress Enemy Air Defenses. 
+You can tank up with Arco at waypoint two.  Your primary objectives are at waypoints three and four, and are already programmed in your jet.  
 <break time="600ms"/>
 
-Once clear, two squadrons of B1 bombers will ripple hell onto the island.  The Warthogs will follow to clean up.   
+When the SAM threat has been eliminated, two squadrons of B-1 bombers will ripple hell onto the island.  The Warthogs will follow to clean up.   
  
 Refuel and resupply on one of the Carriers and provide support to the area, either to provide air superiority, or support the Warthogs to eliminate remaining ground forces.  	
  
 This decision is up to you - do what the situation requires. 
-<break time="1s"/>
-Colt flight... good luck! ATC will be in touch when you are cleared to taxi.
+Be ready to roll out immediately, but hold for instructions from ground.
+You are expected to finish your startup while taxiing.
+<break time="2s"/>
+Colt flight... this entire mission depends on you.  Get the job done!  
 </amazon:effect>
 </amazon:domain> 
-</speak> 
+</speak>
 
+Takeoff follow up briefing from Darkstar
 
+<speak> 
+<amazon:domain name="news"> 
+<amazon:effect name="drc">
+Colt, Darkstar.  Several F5's have taken off and are on their way to this airbase!  S.U. 27s are also on their way.  ETA 20 minutes!  
+
+Continue on your flight and let your escort take care of them, however be on alert. 
+</amazon:effect>
+</amazon:domain> 
+</speak>
 Taxi (Neural - Joanna)
 
 <speak> 
@@ -37,8 +48,7 @@ Taxi (Neural - Joanna)
 <prosody volume="x-loud" rate="+10%">
 <amazon:effect name="drc">
 Colt 1. 
-You are Cleared To Taxi to Runway two-two.
-Your escort flight of F14's is currently taxiing, and will meet up with you en-route.
+You are Cleared To Taxi to Runway two-two - Right Alpha, left Hotel.  Hold short and contact tower.  You will be following the B-1 Bomber group.
 </amazon:effect>
 </prosody>  
 </amazon:domain> 

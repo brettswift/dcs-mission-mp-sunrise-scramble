@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="radio-distortion-audacity-project_data" version="1.3.0" audacityversion="2.1.3" sel0="0.0000000000" sel1="0.0000000000" vpos="0" h="0.0000000000" zoom="21.8536026536" rate="8000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags/>
+	<labeltrack name="Label Track" numlabels="1" height="73" minimized="0" isSelected="1">
+		<label t="0.0000000000" t1="0.0000000000" title="Process:  1. delete track (via X on top left of track)   2.   drag and drop new file  (if track is longer than previous one, ensure all of it will play - drag the arrow above on the timeline to the end)  3.  Select track &amp;  File --&gt; Apply Chain ... --&gt; Military Audio  4. export tracks independently (click solo on track to export)"/>
+	</labeltrack>
+</project>
