@@ -5,7 +5,13 @@ atisVaziani=ATIS:New(AIRBASE.Caucasus.Vaziani, 144.00)
 atisVaziani:SetRadioRelayUnitName("Radio Relay Vaziani")
 atisVaziani:SetTowerFrequencies({269, 140})
 atisVaziani:Start()
- 
+
+SCHEDULER:New( nil, function()
+  atisVaziani:Stop()
+  env.info("BSLOG ATIS Stopped",false)
+end, {}, 600)
+  
+  
 env.info("BSLOG Version Alpha - script is starting",false)
 
 Darkstar = UNIT:FindByName( "Darkstar" )
@@ -20,8 +26,8 @@ B1BAIEngagementZone = ZONE:New( "B1 Engagement Zone" )
 
 -- Create a local variable (in this case called B1BAIGroup1) and 
 -- using the GROUP function find the aircraft group called "Plane" and assign to this variable
-B1BAIGroup1 = GROUP:FindByName( "B1 Group 2" ) -- TODO: get set of groups and use them
-
+B1BAIGroup1 = GROUP:FindByName( "B1 Group 1" ) -- TODO: get set of groups and use them
+B1BAIGroup2 = GROUP:FindByName( "B1 Group 2" )
 -- Create a local Variable (in this cased called B1PatrolZone and 
 -- using the ZONE function find the pre-defined zone called "Patrol Zone" and assign it to this variable
 B1PatrolZone = ZONE:New( "B1 Patrol Zone" )
@@ -33,6 +39,13 @@ AIBAIZone = AI_BAI_ZONE:New( B1PatrolZone, 10000, 11000, 500, 650, B1BAIEngageme
 
 -- end objects for B1 bombing mission -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
+  
+BomberFormationScheduler, BomberFormationSchedulerId = SCHEDULER:New( nil, StartFormation, {}, 10, 30, 0, 720)
+BomberFormationScheduler:Stop(BomberFormationSchedulerId)
+
+
+
+--- Behaviour Functions
  
 function StartFormation()
     BASE:E( timer.getTime() .. "BSLOG  Starting Formation now")
@@ -46,12 +59,7 @@ function StartFormation()
     BomberFormation:FormationLeftWing( 150, 50, 0, 250, 250 )
     BomberFormation:__Start( 1 )
 end
-  
-BomberFormationScheduler, BomberFormationSchedulerId = SCHEDULER:New( nil, StartFormation, {}, 10, 30, 0, 720)
-BomberFormationScheduler:Stop(BomberFormationSchedulerId)
 
---Bombers to go to orbit waypoint
--- MUST be waypoint 4
 function BombersToPreBombingOrbit()
     BASE:E( "BSLOG  Bombers being sent to pre-bombing orbit") 
     -- Tell the program to use the object (in this case called B1BAIGroup1) as the group to use in the BAI function
@@ -68,22 +76,21 @@ function BombersToPreBombingOrbit()
 --    )
 end
 
+function StopBomberFormation()
+  BomberFormationScheduler:Stop( BomberFormationSchedulerId ) 
+end
+
 
 --- When the SA6 site is hit, send in the bombers. 
-SA6Sam = UNIT:FindByName( "Island SAM Group SA6" )
+SA6Sam = GROUP:FindByName( "Island SAM Group SA6" )
 SA6Sam:HandleEvent( EVENTS.Hit )
 
 function SA6Sam:OnEventHit( EventData )
   env.info("BSLOG SA6 site hit, sending bombers in. ",false)
   -- tell the group B1BAIGroup1 to engage the TankColumn1  
   AIBAIZone:__Engage( 3, 600, 10500, AI.Task.WeaponExpend.ALL ) -- Engage with a speed of 600 km/h and an altitude of 10500 meters 
-  BomberFormationScheduler:Stop( BomberFormationSchedulerId ) 
   MessageToBlue("Uzi, Darkstar:  SA6 is out of commission. Begin attack.",45)
 end
-
-
--- in 16 min mission time send to pre-bombing orbit  TODO: make this based on a zone?
-SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 1020)
 
 Swift = CLIENT:FindByName( "Swift" )
 Swift:HandleEvent( EVENTS.Takeoff )
@@ -92,6 +99,12 @@ function Swift:OnEventTakeoff( EventData )
   BASE:E( timer.getTime() .. "BSLOG  Swift Has Taken Off")
   BomberFormationScheduler:Start() 
   
+  -- in 16 min mission time send to pre-bombing orbit  TODO: make this based on a zone?
+  -- Time it takes b1 bomber group #2 (air spawn) to get to waypoint 2. formation should stop by then 
+  SCHEDULER:New( nil, StopBomberFormation, {}, 960)
+  SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 990)
+
+   
   RadioSpeech = RADIOSPEECH:New( 305 )  
   RadioSpeech:Start(60)   
   RadioSpeech:Speak("Colt, Darkstar. You are cleared for 38,000 feet, direct waypoint 2.")

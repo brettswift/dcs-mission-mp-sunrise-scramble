@@ -30,17 +30,6 @@ Colt flight... this entire mission depends on you.  Get the job done!
 </amazon:domain> 
 </speak>
 
-Takeoff follow up briefing from Darkstar
-
-<speak> 
-<amazon:domain name="news"> 
-<amazon:effect name="drc">
-Colt, Darkstar.  Several F5's have taken off and are on their way to this airbase!  S.U. 27s are also on their way.  ETA 20 minutes!  
-
-Continue on your flight and let your escort take care of them, however be on alert. 
-</amazon:effect>
-</amazon:domain> 
-</speak>
 Taxi (Neural - Joanna)
 
 <speak> 
