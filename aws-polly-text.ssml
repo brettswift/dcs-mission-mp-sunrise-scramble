@@ -44,6 +44,19 @@ You are Cleared To Taxi to Runway two-two - Right Alpha, left Hotel.  Hold short
 </speak> 
 
 
+Departure Message
+Neural - British Amy
+
+<speak> 
+<amazon:domain name="news"> 
+<amazon:effect name="drc">
+<prosody rate="+20%">
+Colt - you are cleared for blocks 36 to 38, direct Waypoint 2.
+Advise maintain below Mach 1.
+</prosody>
+</amazon:effect>
+</amazon:domain> 
+</speak>
 
 ----
  

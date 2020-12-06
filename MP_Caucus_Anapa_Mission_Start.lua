@@ -43,7 +43,7 @@ AIBAIZone = AI_BAI_ZONE:New( B1PatrolZone, 10000, 11000, 500, 650, B1BAIEngageme
 BomberFormationScheduler, BomberFormationSchedulerId = SCHEDULER:New( nil, StartFormation, {}, 10, 30, 0, 720)
 BomberFormationScheduler:Stop(BomberFormationSchedulerId)
 
-
+BomberLead = UNIT:FindByName( "B1 Leader" )
 
 --- Behaviour Functions
  
@@ -53,7 +53,6 @@ function StartFormation()
     
     BomberFollowGroup = SET_GROUP:New():FilterCategories("plane"):FilterCoalitions("blue"):FilterPrefixes("B1 Group"):FilterStart()
     BomberFollowGroup:Flush()
-    BomberLead = UNIT:FindByName( "B1 Leader" )
     BomberLead:OptionROTNoReaction()
     BomberFormation = AI_FORMATION:New( BomberLead, BomberFollowGroup, "Left Wing Formation", "Bomber Breifing From MOOSE" )
     BomberFormation:FormationLeftWing( 150, 50, 0, 250, 250 )
@@ -62,11 +61,11 @@ end
 
 function BombersToPreBombingOrbit()
     BASE:E( "BSLOG  Bombers being sent to pre-bombing orbit") 
+    BomberFormationScheduler:Stop( BomberFormationSchedulerId ) 
     -- Tell the program to use the object (in this case called B1BAIGroup1) as the group to use in the BAI function
     AIBAIZone:SetControllable( B1BAIGroup1 )
     -- Tell the group B1BAIGroup1 to start patrol in 10 seconds. 
     AIBAIZone:__Start( 10 ) -- They should start patrolling in the B1PatrolZone.
-    BomberFormationScheduler:Stop( BomberFormationSchedulerId ) 
     MessageToBlue("Uzi, Darkstar:  Proceed to Marshall at waypoint 3",45)
 --    BomberFollowGroup:ForEachGroup(function(Group)
 --        BASE:E( Group.GroupName )
@@ -80,6 +79,14 @@ function StopBomberFormation()
   BomberFormationScheduler:Stop( BomberFormationSchedulerId ) 
 end
 
+BomberLead:HandleEvent( EVENTS.Takeoff)
+
+function BomberLead:OnEventTakeoff(EventData)
+  -- start formation 30 seconds after B1 Leader takes off
+  SCHEDULER:New( nil, function()
+    StartFormation:Start()
+  end, {}, 30)
+end
 
 --- When the SA6 site is hit, send in the bombers. 
 SA6Sam = GROUP:FindByName( "Island SAM Group SA6" )
@@ -102,7 +109,9 @@ function Swift:OnEventTakeoff( EventData )
   -- in 16 min mission time send to pre-bombing orbit  TODO: make this based on a zone?
   -- Time it takes b1 bomber group #2 (air spawn) to get to waypoint 2. formation should stop by then 
   SCHEDULER:New( nil, StopBomberFormation, {}, 960)
-  SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 990)
+
+-- in current DCS this seems to cause a bug. 
+--  SCHEDULER:New( nil, BombersToPreBombingOrbit, {}, 990)
 
    
   RadioSpeech = RADIOSPEECH:New( 305 )  
